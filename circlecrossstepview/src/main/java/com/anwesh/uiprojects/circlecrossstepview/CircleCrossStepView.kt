@@ -145,9 +145,9 @@ class CircleCrossStepView(ctx : Context) : View(ctx) {
         }
 
         fun getNext(dir : Int, cb : () -> Unit) : CCSNode {
-            var curr : CCSNode? = next
+            var curr : CCSNode? = prev
             if (dir == 1) {
-                curr = prev
+                curr = next
             }
             if (curr != null) {
                 return curr
@@ -208,7 +208,7 @@ class CircleCrossStepView(ctx : Context) : View(ctx) {
         fun create(activity : Activity) : CircleCrossStepView {
             val view : CircleCrossStepView = CircleCrossStepView(activity)
             activity.setContentView(view)
-            return view 
+            return view
         }
     }
 }
