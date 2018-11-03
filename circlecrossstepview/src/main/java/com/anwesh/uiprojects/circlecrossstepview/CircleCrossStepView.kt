@@ -46,6 +46,8 @@ class CircleCrossStepView(ctx : Context) : View(ctx) {
 
     private val paint : Paint = Paint(Paint.ANTI_ALIAS_FLAG)
 
+    var onAnimationListener : OnAnimationListener? = null
+
     private val renderer : Renderer = Renderer(this)
 
     override fun onDraw(canvas : Canvas) {
@@ -59,6 +61,10 @@ class CircleCrossStepView(ctx : Context) : View(ctx) {
             }
         }
         return true
+    }
+
+    fun addOnAnimationListener(onComplete : (Int) -> Unit, onReset : (Int) -> Unit) {
+        onAnimationListener = OnAnimationListener(onComplete, onReset)
     }
 
     data class State(var scale : Float = 0f, var dir : Float = 0f, var prevScale : Float = 0f) {
@@ -193,6 +199,10 @@ class CircleCrossStepView(ctx : Context) : View(ctx) {
             animator.animate {
                 ccs.update {i, scl ->
                     animator.stop()
+                    when (scl) {
+                        1f -> view.onAnimationListener?.onComplete?.invoke(i)
+                        0f -> view.onAnimationListener?.onReset?.invoke(i)
+                    }
                 }
             }
         }
@@ -211,4 +221,6 @@ class CircleCrossStepView(ctx : Context) : View(ctx) {
             return view
         }
     }
+
+    data class OnAnimationListener(var onComplete : (Int) -> Unit, var onReset : (Int) -> Unit)
 }
