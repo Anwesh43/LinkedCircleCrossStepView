@@ -178,4 +178,27 @@ class CircleCrossStepView(ctx : Context) : View(ctx) {
             curr.startUpdating(cb)
         }
     }
+
+    data class Renderer(var view : CircleCrossStepView) {
+
+        private val animator : Animator = Animator(view)
+
+        private val ccs : CircleCrossStep = CircleCrossStep(0)
+
+        fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(Color.parseColor("#BDBDBD"))
+            ccs.draw(canvas, paint)
+            animator.animate {
+                ccs.update {i, scl ->
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            ccs.startUpdating {
+                animator.start()
+            }
+        }
+    }
 }
