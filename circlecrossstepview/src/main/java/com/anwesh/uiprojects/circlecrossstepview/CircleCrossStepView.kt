@@ -60,7 +60,7 @@ class CircleCrossStepView(ctx : Context) : View(ctx) {
         }
         return true
     }
-    
+
     data class State(var scale : Float = 0f, var dir : Float = 0f, var prevScale : Float = 0f) {
 
         fun update(cb : (Float) -> Unit) {
@@ -201,6 +201,14 @@ class CircleCrossStepView(ctx : Context) : View(ctx) {
             ccs.startUpdating {
                 animator.start()
             }
+        }
+    }
+
+    companion object {
+        fun create(activity : Activity) : CircleCrossStepView {
+            val view : CircleCrossStepView = CircleCrossStepView(activity)
+            activity.setContentView(view)
+            return view 
         }
     }
 }
